@@ -1,28 +1,32 @@
 package com.citictel.bigdata.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "hello")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Hello {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private final long id;
-    private final String content;
+    private Long id;
 
-    public Hello(long id, String content) {
-        this.id = id;
-        this.content = content;
-    }
+    @Column(length = 128, unique = true)
+    private String name;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public String getContent() {
-        return content;
+    public String getName() {
+        return name;
     }
 }

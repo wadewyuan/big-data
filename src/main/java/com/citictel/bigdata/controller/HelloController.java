@@ -1,43 +1,34 @@
 package com.citictel.bigdata.controller;
 
-import com.citictel.bigdata.dao.HelloDao;
-import com.citictel.bigdata.dao.impl.HelloDaoImpl;
 import com.citictel.bigdata.model.Hello;
 import com.citictel.bigdata.service.HelloService;
-import com.citictel.bigdata.service.impl.HelloServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/hello")
+@RequestMapping("/api/v1/hello")
 public class HelloController {
 
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    @Autowired
+    private HelloService helloService;
 
-//    @Autowired
-//    private HelloService helloService = new HelloServiceImpl();
-
-    private HelloDao helloDao = new HelloDaoImpl();
-
-    @RequestMapping("/")
-    public Hello greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        return new Hello(counter.incrementAndGet(),
-                String.format(template, name));
+    @GetMapping(value = "/{id}")
+    public Hello get(@PathVariable Long id) {
+        return helloService.get(id);
     }
 
-    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-    public Hello get(@PathVariable int id) {
-//        return helloService.get(id);
-        return helloDao.getById(id);
-    }
-
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @GetMapping
     public List<Hello> list() {
-//        return helloService.list();
-        return helloDao.listAll();
+        return helloService.list();
+    }
+
+    @GetMapping(params = "name")
+    public List<Hello> list(@RequestParam("name") String name) {
+        return helloService.getByName(name);
     }
 }
