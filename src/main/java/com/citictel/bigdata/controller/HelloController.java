@@ -1,6 +1,6 @@
 package com.citictel.bigdata.controller;
 
-import com.citictel.bigdata.model.Hello;
+import com.citictel.bigdata.domain.Hello;
 import com.citictel.bigdata.service.HelloService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

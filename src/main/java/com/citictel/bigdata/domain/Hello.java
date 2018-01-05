@@ -1,4 +1,4 @@
-package com.citictel.bigdata.model;
+package com.citictel.bigdata.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,7 +1,7 @@
 package com.citictel.bigdata.repository;
 
 
-import com.citictel.bigdata.model.Hello;
+import com.citictel.bigdata.domain.Hello;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

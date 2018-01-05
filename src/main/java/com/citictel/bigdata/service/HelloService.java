@@ -1,6 +1,6 @@
 package com.citictel.bigdata.service;
 
-import com.citictel.bigdata.model.Hello;
+import com.citictel.bigdata.domain.Hello;
 
 import java.util.List;
 

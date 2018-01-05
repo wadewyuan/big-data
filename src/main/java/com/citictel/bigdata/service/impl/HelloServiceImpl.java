@@ -1,6 +1,6 @@
 package com.citictel.bigdata.service.impl;
 
-import com.citictel.bigdata.model.Hello;
+import com.citictel.bigdata.domain.Hello;
 import com.citictel.bigdata.repository.HelloRepository;
 import com.citictel.bigdata.service.HelloService;
 
