@@ -19,7 +19,7 @@ public class Hello {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(length = 128, unique = true)
+    @Column(length = 128)
     private String name;
 
     public Long getId() {
