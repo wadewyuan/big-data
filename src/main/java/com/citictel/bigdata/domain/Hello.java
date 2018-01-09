@@ -17,9 +17,10 @@ public class Hello {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(length = 128)
+    @Column(name = "name", nullable = false, length = 128)
     private String name;
 
     public Long getId() {
