@@ -37,13 +37,17 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token != null) {
-            // parse the token.
-            String user = Jwts.parser()
-                    .setSigningKey("MyJwtSecret")
-                    .parseClaimsJws(token.replace("Bearer ", ""))
-                    .getBody()
-                    .getSubject();
-
+            String user = null;
+            try {
+                // parse the token.
+                user = Jwts.parser()
+                        .setSigningKey("MyJwtSecret")
+                        .parseClaimsJws(token.replace("Bearer ", ""))
+                        .getBody()
+                        .getSubject();
+            } catch (Exception e) {
+                return null;
+            }
             if (user != null) {
                 return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
             }
