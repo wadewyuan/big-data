@@ -4,8 +4,6 @@ import java.beans.PropertyVetoException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -23,20 +21,18 @@ public class DatasourceConfig {
     @Bean(name = "OAuth")
     public DataSource datasource() throws PropertyVetoException {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        EmbeddedDatabase dataSource = builder
+        return builder
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("sql-scripts/schema.sql")
                 .addScript("sql-scripts/data.sql")
                 .build();
-
-        return dataSource;
     }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("OAuth") DataSource ds) throws PropertyVetoException{
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(ds);
-        entityManagerFactory.setPackagesToScan(new String[]{"com.citictel.bigdata.domain"});
+        entityManagerFactory.setPackagesToScan("com.citictel.bigdata.domain");
         JpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
         return entityManagerFactory;

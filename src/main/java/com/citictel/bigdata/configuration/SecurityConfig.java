@@ -32,12 +32,10 @@ public class SecurityConfig {
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            // @formatter:off
             http
                     .authorizeRequests()
                     .antMatchers("/swagger-ui.html", "/v2/api-docs/**", "/swagger-resources/**", "/actuator/**").permitAll()
                     .anyRequest().authenticated();
-            // @formatter:on
         }
 
         @Override
