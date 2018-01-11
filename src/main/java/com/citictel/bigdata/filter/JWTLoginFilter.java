@@ -7,6 +7,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -48,13 +50,24 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             HttpServletResponse res,
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
+        int expireIn = 60 * 60 * 24 * 1000;
 
         String token = Jwts.builder()
                 .setSubject(((com.citictel.bigdata.domain.User) auth.getPrincipal()).getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + expireIn))
                 .signWith(SignatureAlgorithm.HS512, "MyJwtSecret")
                 .compact();
+
+        Map<String, String> body = new HashMap<>();
+        body.put("access_token", token);
+        body.put("token_type", "bearer");
+        body.put("scope", "read write");
+        body.put("expires_in", String.valueOf(expireIn / 1000));
+
+        String json = new ObjectMapper().writeValueAsString(body);
+
         res.addHeader("Authorization", "Bearer " + token);
+        res.getWriter().write(json);
     }
 
 }
