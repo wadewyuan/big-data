@@ -1,9 +1,3 @@
-CREATE TABLE hello (
-    id BIGINT PRIMARY KEY auto_increment,
-    name VARCHAR(128),
-    PRIMARY KEY (id)
-);
-
 CREATE table oauth_client_details (
   client_id VARCHAR(255) PRIMARY KEY,
   resource_ids VARCHAR(255),

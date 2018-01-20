@@ -28,4 +28,14 @@ public class HelloServiceImpl implements HelloService {
     public List<Hello> getByName(String name) {
         return helloRepository.findByName(name);
     }
+
+    @Override
+    public Hello save(Hello hello) {
+        return helloRepository.save(hello);
+    }
+
+    @Override
+    public void delete(Long id) {
+        helloRepository.delete(id);
+    }
 }

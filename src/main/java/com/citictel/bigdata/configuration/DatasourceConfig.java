@@ -4,9 +4,11 @@ import java.beans.PropertyVetoException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -18,18 +20,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 public class DatasourceConfig {
 
-    @Bean(name = "OAuth")
-    public DataSource datasource() throws PropertyVetoException {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("sql-scripts/schema.sql")
-                .addScript("sql-scripts/data.sql")
-                .build();
+    @Primary
+    @Bean(name = "Resource")
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource dataSource() throws PropertyVetoException {
+        return DataSourceBuilder.create().build();
     }
 
+    @Primary
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("OAuth") DataSource ds) throws PropertyVetoException{
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("Resource") DataSource ds) throws PropertyVetoException{
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(ds);
         entityManagerFactory.setPackagesToScan("com.citictel.bigdata.domain");
@@ -38,6 +38,7 @@ public class DatasourceConfig {
         return entityManagerFactory;
     }
 
+    @Primary
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -45,4 +46,14 @@ public class DatasourceConfig {
         return transactionManager;
     }
 
+
+    @Bean(name = "OAuth")
+    public DataSource secondaryDatasource() throws PropertyVetoException {
+        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+        return builder
+                .setType(EmbeddedDatabaseType.H2)
+                .addScript("oauth-sql-scripts/schema.sql")
+                .addScript("oauth-sql-scripts/data.sql")
+                .build();
+    }
 }

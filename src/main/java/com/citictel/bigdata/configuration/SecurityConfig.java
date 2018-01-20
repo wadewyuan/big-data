@@ -34,8 +34,12 @@ public class SecurityConfig {
         public void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/swagger-ui.html", "/v2/api-docs/**", "/swagger-resources/**", "/actuator/**").permitAll()
+                    .antMatchers("/swagger-ui.html", "/v2/api-docs/**", "/swagger-resources/**", "/actuator/**", "/h2/**").permitAll()
                     .anyRequest().authenticated();
+
+            // Disable csrf to enalbe h2 console
+            http.csrf().disable();
+            http.headers().frameOptions().sameOrigin();
         }
 
         @Override

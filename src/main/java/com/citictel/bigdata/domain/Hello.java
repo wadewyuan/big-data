@@ -15,8 +15,14 @@ import javax.persistence.Table;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Hello {
 
+    public Hello() {}
+
+    public Hello(String name) {
+        this.name = name;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
@@ -27,7 +33,15 @@ public class Hello {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

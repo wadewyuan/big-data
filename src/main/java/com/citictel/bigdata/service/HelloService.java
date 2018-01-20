@@ -11,4 +11,8 @@ public interface HelloService {
     List<Hello> list();
 
     List<Hello> getByName(String name);
+
+    Hello save(Hello hello);
+
+    void delete(Long id);
 }
