@@ -21,21 +21,23 @@ public class ControllerLogger {
 
     @InitBinder
     private void initBinder(WebDataBinder binder, WebRequest webRequest) throws IOException {
-        String clientId = webRequest.getUserPrincipal().getName();
-        String requestMethod = ((ServletWebRequest) webRequest).getHttpMethod().name();
-        String requestUri = ((ServletWebRequest) webRequest).getRequest().getRequestURI().toString();
-        String body = new String(((ContentCachingRequestWrapper) ((ServletWebRequest) webRequest).getRequest()).getContentAsByteArray());
-        String queryString = ((ServletWebRequest) webRequest).getRequest().getQueryString();
+        if(webRequest.getUserPrincipal() != null) {
+            String clientId = webRequest.getUserPrincipal().getName();
+            String requestMethod = ((ServletWebRequest) webRequest).getHttpMethod().name();
+            String requestUri = ((ServletWebRequest) webRequest).getRequest().getRequestURI().toString();
+            String body = new String(((ContentCachingRequestWrapper) ((ServletWebRequest) webRequest).getRequest()).getContentAsByteArray());
+            String queryString = ((ServletWebRequest) webRequest).getRequest().getQueryString();
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("CLIENT [" + clientId + "] REQUEST DATA: " + requestUri + ", METHOD: " + requestMethod);
-        if(!StringUtils.isEmpty(queryString)) {
-            stringBuilder.append(", QUERY STRING: " + queryString);
-        }
-        if (!StringUtils.isEmpty(body)) {
-            stringBuilder.append(", PAYLOAD: \n" + body);
-        }
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("CLIENT [" + clientId + "] REQUEST DATA: " + requestUri + ", METHOD: " + requestMethod);
+            if(!StringUtils.isEmpty(queryString)) {
+                stringBuilder.append(", QUERY STRING: " + queryString);
+            }
+            if (!StringUtils.isEmpty(body)) {
+                stringBuilder.append(", PAYLOAD: \n" + body);
+            }
 
-        logger.debug(stringBuilder.toString());
+            logger.debug(stringBuilder.toString());
+        }
     }
 }

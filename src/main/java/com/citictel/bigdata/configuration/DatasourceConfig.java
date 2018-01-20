@@ -48,12 +48,14 @@ public class DatasourceConfig {
 
 
     @Bean(name = "OAuth")
+    @ConfigurationProperties(prefix = "oauth.datasource")
     public DataSource secondaryDatasource() throws PropertyVetoException {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+        /*EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         return builder
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("oauth-sql-scripts/schema.sql")
                 .addScript("oauth-sql-scripts/data.sql")
-                .build();
+                .build();*/
+        return DataSourceBuilder.create().build();
     }
 }
