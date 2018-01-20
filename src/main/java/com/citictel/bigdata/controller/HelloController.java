@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +27,13 @@ public class HelloController {
     private HelloService helloService;
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("#oauth2.hasScope('read')")
     public Hello get(@PathVariable Long id) {
         return helloService.get(id);
     }
 
     @GetMapping
+    @PreAuthorize("#oauth2.hasScope('read')")
     public List<Hello> list(@RequestParam(value = "name", required = false) String name) {
         if(!StringUtils.isEmpty(name)) {
             return helloService.getByName(name);
@@ -39,6 +42,7 @@ public class HelloController {
     }
 
     @PostMapping
+    @PreAuthorize("#oauth2.hasScope('write')")
     public ResponseEntity<Hello> add(@RequestBody Hello input) {
         Hello result = helloService.save(new Hello(input.getName()));
 
@@ -50,6 +54,7 @@ public class HelloController {
     }
 
     @PutMapping
+    @PreAuthorize("#oauth2.hasScope('write')")
     public ResponseEntity<Hello> update(@RequestBody Hello input) {
 
         if (input.getId() != null && helloService.get(input.getId()) != null) {
@@ -62,6 +67,7 @@ public class HelloController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("#oauth2.hasScope('write')")
     public ResponseEntity<Hello> delete(@PathVariable Long id) {
         if (id != null && helloService.get(id) != null) {
             helloService.delete(id);
