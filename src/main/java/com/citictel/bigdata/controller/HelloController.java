@@ -3,6 +3,7 @@ package com.citictel.bigdata.controller;
 import com.citictel.bigdata.domain.Hello;
 import com.citictel.bigdata.service.HelloService;
 import java.net.URI;
+import java.sql.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +37,17 @@ public class HelloController {
     @PreAuthorize("#oauth2.hasScope('read')")
     public List<Hello> list(@RequestParam(value = "name", required = false) String name) {
         if(!StringUtils.isEmpty(name)) {
-            return helloService.getByName(name);
+            return helloService.findByName(name);
         }
         return helloService.list();
+    }
+
+    @GetMapping(value = "/search")
+    @PreAuthorize("#oauth2.hasScope('read')")
+    public List<Hello> searchByNameMatch(@RequestParam(value = "name_containing", required = false) String nameContaining,
+                                                           @RequestParam(value = "effective_date", required = false) Date effectiveDate,
+                                                           @RequestParam(value = "expiry_date", required = false) Date expiryDate) {
+        return helloService.findByNameContainingAndEffectiveDateAndExpiryDate(nameContaining, effectiveDate, expiryDate);
     }
 
     @PostMapping

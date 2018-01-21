@@ -2,6 +2,7 @@ package com.citictel.bigdata.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,12 @@ public class Hello {
     @Column(name = "name", nullable = false, length = 128)
     private String name;
 
+    @Column(name = "eff_date")
+    private Date effectiveDate;
+
+    @Column(name = "exp_date")
+    private Date expiryDate;
+
     public Long getId() {
         return id;
     }
@@ -43,5 +50,21 @@ public class Hello {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 }

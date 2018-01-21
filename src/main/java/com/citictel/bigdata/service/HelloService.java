@@ -2,6 +2,7 @@ package com.citictel.bigdata.service;
 
 import com.citictel.bigdata.domain.Hello;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface HelloService {
@@ -10,9 +11,11 @@ public interface HelloService {
 
     List<Hello> list();
 
-    List<Hello> getByName(String name);
+    List<Hello> findByName(String name);
 
     Hello save(Hello hello);
 
     void delete(Long id);
+
+    List<Hello> findByNameContainingAndEffectiveDateAndExpiryDate(String nameContaining, Date effectiveDate, Date expiryDate);
 }
