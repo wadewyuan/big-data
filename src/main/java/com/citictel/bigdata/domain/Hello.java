@@ -3,6 +3,7 @@ package com.citictel.bigdata.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.sql.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,11 @@ public class Hello {
 
     public Hello(String name) {
         this.name = name;
+        this.effectiveDate = new Date(System.currentTimeMillis());
+        Calendar c = Calendar.getInstance();
+        c.setTime(effectiveDate);
+        c.add(Calendar.YEAR, 30);
+        this.expiryDate = new Date(c.getTimeInMillis());
     }
 
     @Id
