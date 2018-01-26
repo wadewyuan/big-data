@@ -2,6 +2,8 @@ package com.citictel.bigdata.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.context.annotation.Profile;
+
 import java.sql.Date;
 import java.util.Calendar;
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
+@Profile("dev")
 @Table(name = "hello")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)

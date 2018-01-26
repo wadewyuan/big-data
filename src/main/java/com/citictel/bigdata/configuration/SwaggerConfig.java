@@ -53,8 +53,9 @@ public class SwaggerConfig {
 
     private OAuth securitySchema() {
         List<AuthorizationScope> authorizationScopeList = newArrayList();
-        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
-        authorizationScopeList.add(new AuthorizationScope("write", "write all"));
+        for (ScopeEnum s : ScopeEnum.values()) {
+            authorizationScopeList.add(new AuthorizationScope(s.NAME(), s.DESC()));
+        }
 
         List<GrantType> grantTypes = newArrayList();
         GrantType grantType = new ClientCredentialsGrant(swaggerTokenURL);
@@ -71,9 +72,10 @@ public class SwaggerConfig {
     }
 
     private List<SecurityReference> defaultAuth() {
-        final AuthorizationScope[] authorizationScopes = new AuthorizationScope[2];
-        authorizationScopes[0] = new AuthorizationScope("read", "read all");
-        authorizationScopes[1] = new AuthorizationScope("write", "write all");
+        final AuthorizationScope[] authorizationScopes = new AuthorizationScope[ScopeEnum.values().length];
+        for (int i = 0; i < ScopeEnum.values().length; i++) {
+            authorizationScopes[i] = new AuthorizationScope(ScopeEnum.values()[i].NAME(), ScopeEnum.values()[i].DESC());
+        }
 
         return Collections.singletonList(new SecurityReference("oauth2schema", authorizationScopes));
     }

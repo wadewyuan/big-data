@@ -7,10 +7,12 @@ import com.citictel.bigdata.service.HelloService;
 import java.sql.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
+@Profile("dev")
 public class HelloServiceImpl implements HelloService {
 
     @Autowired
