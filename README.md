@@ -1,3 +1,5 @@
+Microservice for restful API
+
 Run with dev or prod profiles:
     - By default, the active profile is prod, so just run java -jar big-data-{version}.jar
     - To activate dev profile, add -D option java -jar -Dspring.profiles.active=dev big-data-{version}.jar

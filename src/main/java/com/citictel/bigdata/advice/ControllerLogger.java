@@ -1,4 +1,4 @@
-package com.citictel.bigdata.logger;
+package com.citictel.bigdata.advice;
 
 import java.io.IOException;
 import org.slf4j.Logger;
@@ -20,6 +20,7 @@ public class ControllerLogger {
 
     @InitBinder
     private void initBinder(WebDataBinder binder, WebRequest webRequest) throws IOException {
+        // TODO: Some hacking here, need to find a more elegant way to get the request data
         if(webRequest.getUserPrincipal() != null) {
             String clientId = webRequest.getUserPrincipal().getName();
             String requestMethod = ((ServletWebRequest) webRequest).getHttpMethod().name();
