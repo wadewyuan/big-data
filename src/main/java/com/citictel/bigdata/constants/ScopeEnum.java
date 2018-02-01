@@ -1,9 +1,8 @@
-package com.citictel.bigdata.configuration;
+package com.citictel.bigdata.constants;
 
 public enum ScopeEnum {
     READ("read", "Read all"),
-    WRITE("write", "Write all"),
-    TEST("test", "Scope for testing")
+    WRITE("write", "Write all")
     ;
 
     private final Object[] values;
