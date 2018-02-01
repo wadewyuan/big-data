@@ -1,25 +1,17 @@
 package com.citictel.bigdata.controller;
 
+import com.citictel.bigdata.constants.StatusCodeEnum;
 import com.citictel.bigdata.domain.Hello;
+import com.citictel.bigdata.domain.ResponseData;
 import com.citictel.bigdata.service.HelloService;
-import java.net.URI;
-import java.sql.Date;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
 
 @RestController
 @Profile("dev")
@@ -37,54 +29,59 @@ public class HelloController {
 
     @GetMapping
     @PreAuthorize("#oauth2.hasScope('read')")
-    public List<Hello> list(@RequestParam(value = "name", required = false) String name) {
+    public ResponseData list(@RequestParam(value = "name", required = false) String name) {
+        ResponseData r = new ResponseData();
         if(!StringUtils.isEmpty(name)) {
-            return helloService.findByName(name);
+            r.setData(helloService.findByName(name));
+        } else {
+            r.setData(helloService.list());
         }
-        return helloService.list();
+        return r;
     }
 
     @GetMapping(value = "/search")
     @PreAuthorize("#oauth2.hasScope('read')")
-    public List<Hello> searchByNameMatch(@RequestParam(value = "name_containing", required = false) String nameContaining,
+    public ResponseData searchByNameMatch(@RequestParam(value = "name_containing", required = false) String nameContaining,
                                                            @RequestParam(value = "effective_date", required = false) Date effectiveDate,
                                                            @RequestParam(value = "expiry_date", required = false) Date expiryDate) {
-        return helloService.findByNameContainingAndEffectiveDateAndExpiryDate(nameContaining, effectiveDate, expiryDate);
+        ResponseData r = new ResponseData();
+        r.setData(helloService.findByNameContainingAndEffectiveDateAndExpiryDate(nameContaining, effectiveDate, expiryDate));
+        return r;
     }
 
     @PostMapping
     @PreAuthorize("#oauth2.hasScope('write')")
-    public ResponseEntity<Hello> add(@RequestBody Hello input) {
+    public ResponseData add(@RequestBody Hello input) {
+        ResponseData r = new ResponseData();
         Hello result = helloService.save(new Hello(input.getName()));
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(result.getId()).toUri();
-
-        return ResponseEntity.created(location).body(result);
+        r.setData(result);
+        r.setStatusCodeAndMsg(StatusCodeEnum.CREATED);
+        return r;
     }
 
     @PutMapping
     @PreAuthorize("#oauth2.hasScope('write')")
-    public ResponseEntity<Hello> update(@RequestBody Hello input) {
-
+    public ResponseData update(@RequestBody Hello input) {
+        ResponseData r = new ResponseData();
         if (input.getId() != null && helloService.get(input.getId()) != null) {
             helloService.save(input);
-            return ResponseEntity.ok(input);
+            r.setData(input);
         } else {
-            return ResponseEntity.notFound().build();
+            r.setStatusCodeAndMsg(StatusCodeEnum.NO_CONTENT);
         }
-
+        return r;
     }
 
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("#oauth2.hasScope('write')")
-    public ResponseEntity<Hello> delete(@PathVariable Long id) {
+    public ResponseData delete(@PathVariable Long id) {
+        ResponseData r = new ResponseData();
         if (id != null && helloService.get(id) != null) {
             helloService.delete(id);
-            return ResponseEntity.ok().build();
+            r.setData(ResponseEntity.ok().build());
         } else {
-            return ResponseEntity.noContent().build();
+            r.setStatusCodeAndMsg(StatusCodeEnum.NO_CONTENT);
         }
+        return r;
     }
 }
