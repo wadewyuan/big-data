@@ -7,6 +7,7 @@ Run with dev or prod profiles:
 *Note* - The "Hello" APIs are only activated in dev profile
 
 API Usage
+
     Step #1 - Get the token with client id and client secret
         curl -H "Accept: application/json" client_id:client_secret@localhost:8080/oauth/token -d grant_type=client_credentials
 
