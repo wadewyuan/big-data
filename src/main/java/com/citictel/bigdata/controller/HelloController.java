@@ -41,7 +41,7 @@ public class HelloController {
 
     @GetMapping(value = "/search")
     @PreAuthorize("#oauth2.hasScope('read')")
-    public ResponseData searchByNameMatch(@RequestParam(value = "name_containing", required = false) String nameContaining,
+    public ResponseData search(@RequestParam(value = "name_containing", required = false) String nameContaining,
                                                            @RequestParam(value = "effective_date", required = false) Date effectiveDate,
                                                            @RequestParam(value = "expiry_date", required = false) Date expiryDate) {
         ResponseData r = new ResponseData();
